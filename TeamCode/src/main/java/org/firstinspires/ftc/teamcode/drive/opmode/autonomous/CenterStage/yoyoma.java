@@ -7,7 +7,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 @Autonomous
 
 public class yoyoma extends LinearOpMode {
-    
+    //yoyo
+
     @Override
     public void runOpMode() throws InterruptedException {
 
