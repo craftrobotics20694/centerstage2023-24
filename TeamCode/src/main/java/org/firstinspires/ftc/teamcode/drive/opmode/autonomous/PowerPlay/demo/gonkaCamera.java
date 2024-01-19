@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.drive.opmode.autonomous.PowerPlay.demo;
+/*package org.firstinspires.ftc.teamcode.drive.opmode.autonomous.PowerPlay.demo;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -41,3 +41,4 @@ public class gonkaCamera extends OpMode {
 
     }
 }
+*/

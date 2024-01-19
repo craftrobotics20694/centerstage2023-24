@@ -1,23 +1,24 @@
-package org.firstinspires.ftc.teamcode.drive.opmode.autonomous.PowerPlay.demo;
+/*package org.firstinspires.ftc.teamcode.drive.opmode.autonomous.PowerPlay.demo;
 
 import com.acmerobotics.dashboard.config.Config;
-import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.drive.opmode.visionPowerPlay.poleFinder;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
-import org.firstinspires.ftc.teamcode.drive.opmode.visionPowerPlay.poleFinder;
 @Disabled
 @Config
 @Autonomous(group = "demo")
 public class asyncAngleAdjust extends LinearOpMode {
+
     SampleMecanumDrive drive;
     OpenCvWebcam camera = null;
     poleFinder poleFinderPipeline = new poleFinder();
@@ -91,3 +92,4 @@ public class asyncAngleAdjust extends LinearOpMode {
 
     }
 }
+*/
