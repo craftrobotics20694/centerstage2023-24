@@ -28,7 +28,7 @@ public class cameraPipeline
         public void onOpened();
         { camera.setViewportRenderer(OpenCvCamera.ViewportRenderer.GPU_ACCELERATED);
             //Accelerates GPU to live viewport, irrelevant if viewport is paused
-            camera.startStreaming(1920, 1080, OpenCvCameraRotation.UPRIGHT);
+            camera.startStreaming(1280, 720, OpenCvCameraRotation.UPRIGHT);
             // gotta input camera resolution once we get that info
             // Usually this is where you'll want to start streaming from the camera
         }
