@@ -40,7 +40,7 @@ public class blueFront extends LinearOpMode {
 
     // these poses are markers for the Left and right back to move to the backdrop in FrontSide Code these will not be here
     // private final Pose2d blueBackTruss = new Pose2d(-24, 36, Math.toRadians(0));
-    private final Pose2d blueFrontTrussMarker = new Pose2d(15, 48, Math.toRadians(270));
+    private final Pose2d blueFrontTrussMarker = new Pose2d(15, 48, Math.toRadians(-90));
     // private final Pose2d blueFrontTruss = new Pose2d(-24, 36, Math.toRadians(0));
 
     // these are the drop poses these are the same for all blue opModes only different for Red side
