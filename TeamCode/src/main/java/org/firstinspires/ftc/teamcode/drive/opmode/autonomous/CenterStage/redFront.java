@@ -33,10 +33,12 @@ public class redFront extends LinearOpMode  {
     private final Pose2d opEndPose = new Pose2d(50, -60, Math.toRadians(0));
 
     // line Poses wrote the list this way to make it easier to read.
-    private final Pose2d rightLine = new Pose2d(24, -30, Math.toRadians(0));
-    private final Pose2d leftLine = new Pose2d(1,-34, Math.toRadians(180));
-    private final Pose2d centerLine = new Pose2d(12,-24 , Math.toRadians(90));
-    List<Pose2d> listPose = Arrays.asList(leftLine, rightLine, centerLine);
+    private final Pose2d rightLine = new Pose2d(28, -30, Math.toRadians(0));
+    private final Pose2d leftLine = new Pose2d(5,-34, Math.toRadians(0));
+    private final Pose2d centerLine = new Pose2d(14,-24 , Math.toRadians(0));
+    List<Pose2d> listPose = Arrays.asList(leftLine,centerLine, rightLine);
+
+    private final Pose2d backdropMarker = new Pose2d(28,-47, Math.toRadians(0));
 
     // these poses are markers for the Left and right back to move to the backdrop in FrontSide Code these will not be here
     private final Pose2d redBackTrussMarker = new Pose2d(12, -36, Math.toRadians(0));
@@ -89,7 +91,7 @@ public class redFront extends LinearOpMode  {
         });
 
         while (!isStarted()) {
-            drive.initArm();
+            drive.setBothGrip(false);
             linePlace = ourCam.getPixelLocationRed();
             telemetry.addData("Direction", linePlace);
             telemetry.update();
@@ -105,23 +107,23 @@ public class redFront extends LinearOpMode  {
         while(isStarted()) {
             if (linePlace == LEFT) {
                 moveToPurple(drive,0);
-                drive.setFrontGrip(false);
+                drive.setBackGrip(true);
                 LRCmoveToBackDrop (drive, 0);
-                drive.setBackGrip(false);
+                drive.setBackGrip(true);
                 goPark(drive);
                 break;
 
             }
             else if (linePlace == MIDDLE) {
                 moveToPurple(drive,1);
-                drive.setFrontGrip(false);
+                drive.setBackGrip(true);
                 LRCmoveToBackDrop(drive,1);
                 goPark(drive);
                 break;
             }
             else if (linePlace == RIGHT) {
                 moveToPurple(drive,2);
-                drive.setFrontGrip(false);
+                drive.setBackGrip(true);
                 LRCmoveToBackDrop (drive, 2);
                 goPark(drive);
                 break;
@@ -166,7 +168,13 @@ public class redFront extends LinearOpMode  {
 
     }
     public void goPark (SampleMecanumDrive robot){
+
+
         TrajectorySequence  park = robot.trajectorySequenceBuilder(robot.getPoseEstimate())
+                .lineToSplineHeading(backdropMarker,
+                        SampleMecanumDrive.getVelocityConstraint(travelSpeed,
+                                DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(travelAccel))
 
                 .lineToSplineHeading(opEndPose, SampleMecanumDrive.getVelocityConstraint(travelSpeed,
                                 DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),

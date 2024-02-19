@@ -34,15 +34,15 @@ public class GraemeAutoDefaultCode extends LinearOpMode  {
 
 
     // line Poses wrote the list this way to make it easier to read.
-    private final Pose2d rightLine = new Pose2d(-48, 36, Math.toRadians(-90));
-    private final Pose2d leftLine = new Pose2d(-24, 36, Math.toRadians(0));
-    private final Pose2d centerLine = new Pose2d(-36, 24.5, Math.toRadians(-90));
+    private final Pose2d rightLine = new Pose2d(-40, 34, Math.toRadians(0));
+    private final Pose2d leftLine = new Pose2d(-20, 34, Math.toRadians(0));
+    private final Pose2d centerLine = new Pose2d(-36, 20, Math.toRadians(-90));
     List<Pose2d> listPose = Arrays.asList(leftLine, centerLine,rightLine);
 
 
 
     // these poses are markers for the Left and right back to move to the backdrop in FrontSide Code these will not be here
-    private final Pose2d blueBackTruss = new Pose2d(-20, 36, Math.toRadians(0));
+    private final Pose2d blueBackTruss = new Pose2d(-20, 34, Math.toRadians(0));
     private final Pose2d blueBackLineMoveMarker = new Pose2d(-36, 41, Math.toRadians(-90));
     private final Pose2d blueFrontTruss = new Pose2d(24, 36, Math.toRadians(0));
 
@@ -50,6 +50,8 @@ public class GraemeAutoDefaultCode extends LinearOpMode  {
     //these are markers for the Center back move2backDrop in FrontSide Cose these will not be here
     private final Pose2d blueFrontGate = new Pose2d(24, 12, Math.toRadians(0));
     private final Pose2d blueBackGate = new Pose2d(-34, 11.5, Math.toRadians(-15));
+
+    private final Pose2d backdropMarker = new Pose2d(28, 47, Math.toRadians(0));
 
 
     // these are the drop poses these are the same for all blue opModes only different for Red side
@@ -117,7 +119,7 @@ public class GraemeAutoDefaultCode extends LinearOpMode  {
         });
 
         while (!isStarted()) {
-            drive.initArm();
+            drive.setBothGrip(false);
             linePlace = ourCam.getPixelLocation();
             telemetry.addData("Direction", linePlace);
             telemetry.update();
@@ -133,6 +135,7 @@ public class GraemeAutoDefaultCode extends LinearOpMode  {
         while(isStarted()) {
             if (linePlace == LEFT) {
                 moveToPurple(drive,0);
+                drive.setBackGrip(true);
               //  drive.setFrontGrip(false);
                 LRmoveToBackDrop (drive, 0);
               //  drive.setBackGrip(false);
@@ -142,13 +145,14 @@ public class GraemeAutoDefaultCode extends LinearOpMode  {
             }
             else if (linePlace == MIDDLE) {
                 moveToPurple(drive,1);
-            //    drive.setFrontGrip(false);
+               drive.setBackGrip(true);
                 CmoveToBackDrop(drive,1);
                 goPark(drive);
                 break;
             }
             else if (linePlace == RIGHT) {
                 moveToPurple(drive,2);
+                drive.setBackGrip(true);
               //  drive.setFrontGrip(false);
                 LRmoveToBackDrop (drive, 2);
                 goPark(drive);
@@ -231,16 +235,22 @@ public class GraemeAutoDefaultCode extends LinearOpMode  {
         robot.updatePoseEstimate();
 
     }
-    public void goPark (SampleMecanumDrive robot){
-    TrajectorySequence  park = robot.trajectorySequenceBuilder(robot.getPoseEstimate())
+    public void goPark (SampleMecanumDrive robot) {
 
-            .lineToSplineHeading(opEndPose, SampleMecanumDrive.getVelocityConstraint(travelSpeed,
-                            DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                    SampleMecanumDrive.getAccelerationConstraint(travelAccel)
-            )
-            .build();
-    robot.followTrajectorySequence(park);
-    robot.updatePoseEstimate();
+
+        TrajectorySequence park = robot.trajectorySequenceBuilder(robot.getPoseEstimate())
+                .lineToSplineHeading(backdropMarker,
+                        SampleMecanumDrive.getVelocityConstraint(travelSpeed,
+                                DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(travelAccel))
+
+                .lineToSplineHeading(opEndPose, SampleMecanumDrive.getVelocityConstraint(travelSpeed,
+                                DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(travelAccel)
+                )
+                .build();
+        robot.followTrajectorySequence(park);
+        robot.updatePoseEstimate();
     }
 
 }

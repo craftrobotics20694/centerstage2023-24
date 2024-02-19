@@ -41,6 +41,7 @@ public class ManualOp extends OpMode {
         gripServoF = hardwareMap.servo.get("gripServoF");
         gripServoB = hardwareMap.servo.get("gripServoB");
         launchServo = hardwareMap.servo.get("launchServo");
+        gripServoF.setDirection(Servo.Direction.REVERSE);
         gripServoB.setPosition(0);
         gripServoF.setPosition(0);
         launchServo.setPosition(0);
@@ -73,8 +74,9 @@ public class ManualOp extends OpMode {
 
         //Gamepad2 controls the arm and claw
             //slide controls
-        double vert = gamepad2.left_stick_y;
-        double wrist = gamepad2.right_stick_y; //wrist range 8 at intake -100 at backdrop
+        double vert =
+                ( gamepad2.right_trigger-gamepad2.left_trigger);
+        double wrist =  gamepad2.left_stick_y;//wrist range 8 at intake -100 at backdrop
 
      //   slideLeft.setPower(-vert); // at base 17 at backdrop 3142 (iffy number)
       //  slideRight.setPower(vert); // at base 2 at backdrop  -3125 (iffy number)
@@ -101,7 +103,7 @@ public class ManualOp extends OpMode {
             }
 // top encoder 100 med 120 low 145
             if (wristMotor.getCurrentPosition()>=10|| wristMotor.getCurrentPosition() <= -105){
-                wristMotor.setPower(wrist*.3);
+                wristMotor.setPower(wrist*.4);
                 wristMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             } else {
                 wristMotor.setPower(wrist*.6);
@@ -121,22 +123,22 @@ public class ManualOp extends OpMode {
             double closed = 0, Fopen = 13,Bopen = 27;
             double servoRot = 300;
 
-            if (gamepad2.circle)
+            if (gamepad2.cross)
             {
-                gripServoB.setPosition(closed/servoRot);
-                gripServoF.setPosition(closed/servoRot);
+               // gripServoB.setPosition(closed/servoRot);
+               // gripServoF.setPosition(closed/servoRot);
 
-               // gripServoB.setPosition(open/servoRot);
-              //  gripServoF.setPosition(open/servoRot);
+                gripServoB.setPosition(Bopen/servoRot);
+                gripServoF.setPosition(Fopen/servoRot);
 
             }
             else
             {
-                gripServoB.setPosition(Bopen/servoRot);
-                gripServoF.setPosition(Fopen/servoRot);
+             //   gripServoB.setPosition(Bopen/servoRot);
+              //  gripServoF.setPosition(Fopen/servoRot);
 
-               // gripServoB.setPosition(closed/servoRot);
-              //  gripServoF.setPosition(closed/servoRot);
+                gripServoB.setPosition(closed/servoRot);
+                gripServoF.setPosition(closed/servoRot);
             }
 
 

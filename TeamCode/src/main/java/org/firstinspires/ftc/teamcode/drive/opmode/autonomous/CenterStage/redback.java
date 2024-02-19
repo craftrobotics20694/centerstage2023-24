@@ -28,28 +28,30 @@ import java.util.List;
 @Config
 public class redback extends LinearOpMode {
     //THIS IS THE DEFAULT CODE and the DEFAULT POSITION IS BLUE BACK
-    private final Pose2d opStartpose = new Pose2d(-36, -60, Math.toRadians(90));
+    private final Pose2d opStartpose = new Pose2d(-34.5, -63, Math.toRadians(90));
     private final Pose2d opEndPose = new Pose2d(50, -60, Math.toRadians(0));
 
     // line Poses wrote the list this way to make it easier to read.
-    private final Pose2d leftLine = new Pose2d(-49, -30, Math.toRadians(180));
-    private final Pose2d rightLine = new Pose2d(-23, -30, Math.toRadians(0));
-    private final Pose2d centerLine = new Pose2d(-36, -23.5, Math.toRadians(90));
-    List<Pose2d> listPose = Arrays.asList(leftLine, rightLine, centerLine);
+    private final Pose2d leftLine = new Pose2d(-42, -30, Math.toRadians(0));
+    private final Pose2d rightLine = new Pose2d(-20, -27, Math.toRadians(0));
+    private final Pose2d centerLine = new Pose2d(-36, -12, Math.toRadians(90));
+    List<Pose2d> listPose = Arrays.asList(leftLine,centerLine, rightLine);
 
     // these poses are markers for the Left and right back to move to the backdrop in FrontSide Code these will not be here
-    private final Pose2d redBackTruss = new Pose2d(-20, -36, Math.toRadians(0));
-    private final Pose2d redBackTrussMarker = new Pose2d(-36, -41, Math.toRadians(90));
-    private final Pose2d redFrontTruss = new Pose2d(10, -36, Math.toRadians(0));
+    private final Pose2d redBackTruss = new Pose2d(-20, -31, Math.toRadians(0));
+    private final Pose2d redBackTrussMarker = new Pose2d(-36, -40, Math.toRadians(90));
+    private final Pose2d redFrontTruss = new Pose2d(10, -31, Math.toRadians(0));
 
     //these are markers for the Center back move2backDrop in FrontSide Cose these will not be here
     private final Pose2d redFrontGate = new Pose2d(24, -12, Math.toRadians(0));
-    private final Pose2d redBackGate = new Pose2d(-34, -11.5, Math.toRadians(15));
+    private final Pose2d redBackGate = new Pose2d(-34, -12, Math.toRadians(0));
 
     // these are the drop poses these are the same for all blue opModes only different for Red side
+
+    private final Pose2d backdropMarker = new Pose2d(28,-47, Math.toRadians(0));
     private final Pose2d redDropL = new Pose2d(50, -29, Math.toRadians(0));
     private final Pose2d redDropC = new Pose2d(50, -36, Math.toRadians(0));
-    private final Pose2d redDropR = new Pose2d(50, -43, Math.toRadians(0));
+    private final Pose2d redDropR = new Pose2d(50, -39, Math.toRadians(0));
 
     List<Pose2d> listYellowDrop = Arrays.asList(redDropL, redDropC, redDropR);
 
@@ -94,7 +96,8 @@ public class redback extends LinearOpMode {
         });
 
         while (!isStarted()) {
-            drive.initArm();
+          //  drive.initArm();
+            drive.setBothGrip(false);
             linePlace = ourCam.getPixelLocationRed();
             telemetry.addData("Direction", linePlace);
             telemetry.update();
@@ -110,7 +113,7 @@ public class redback extends LinearOpMode {
         while(isStarted()) {
             if (linePlace == LEFT) {
                 moveToPurple(drive,0);
-                drive.setFrontGrip(false);
+                drive.setBackGrip(true);
                 LRmoveToBackDrop (drive, 0);
                 drive.setBackGrip(false);
                 goPark(drive);
@@ -119,14 +122,16 @@ public class redback extends LinearOpMode {
             }
             else if (linePlace == MIDDLE) {
                 moveToPurple(drive,1);
-                drive.setFrontGrip(false);
+                drive.setBackGrip(true);
+              //  drive.setFrontGrip(false);
                 CmoveToBackDrop(drive,1);
                 goPark(drive);
                 break;
             }
             else if (linePlace == RIGHT) {
                 moveToPurple(drive,2);
-                drive.setFrontGrip(false);
+                drive.setBackGrip(true);
+
                 LRmoveToBackDrop (drive, 2);
                 goPark(drive);
                 break;
@@ -209,7 +214,13 @@ public class redback extends LinearOpMode {
 
     }
     public void goPark (SampleMecanumDrive robot){
+
+
         TrajectorySequence  park = robot.trajectorySequenceBuilder(robot.getPoseEstimate())
+                .lineToSplineHeading(backdropMarker,
+                        SampleMecanumDrive.getVelocityConstraint(travelSpeed,
+                                DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(travelAccel))
 
                 .lineToSplineHeading(opEndPose, SampleMecanumDrive.getVelocityConstraint(travelSpeed,
                                 DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),

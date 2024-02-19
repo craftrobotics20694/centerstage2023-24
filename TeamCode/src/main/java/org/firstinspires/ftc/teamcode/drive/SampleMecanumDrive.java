@@ -70,7 +70,10 @@ public class SampleMecanumDrive extends MecanumDrive {
 
     private TrajectoryFollower follower;
 
-    private DcMotorEx leftFront, leftRear, rightRear, rightFront;
+    public DcMotorEx leftFront;
+    public DcMotorEx leftRear;
+    private DcMotorEx rightRear;
+    public DcMotorEx rightFront;
     private List<DcMotorEx> motors;
 
     public Servo gripServoB, gripServoF,launchServo;
@@ -112,6 +115,7 @@ public class SampleMecanumDrive extends MecanumDrive {
         gripServoF =hardwareMap.servo.get("gripServoF");
         gripServoB =hardwareMap.servo.get("gripServoB");
         launchServo = hardwareMap.servo.get("launchServo");
+        gripServoF.setDirection(Servo.Direction.REVERSE);
 
         slideLeft = hardwareMap.get(DcMotorEx.class, "slideLeft");
         slideRight = hardwareMap.get(DcMotorEx.class, "slideRight");
@@ -351,10 +355,10 @@ public class SampleMecanumDrive extends MecanumDrive {
 
     public void initArm() {
         stopAndResetMotors();
-        setBothGrip(false);
+        //setBothGrip(false);
         setSlideVelocity(2000, slideLeft, slideRight, wristMotor);
-        setHeight(0);
-        setExtension(0);
+        setHeight(10);
+        setExtension(3);
         restartMotors();
     }
 

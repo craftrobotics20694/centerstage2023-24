@@ -33,16 +33,17 @@ public class blueFront extends LinearOpMode {
     private final Pose2d opEndPose = new Pose2d(48, 62, Math.toRadians(0));
 
     // line Poses wrote the list this way to make it easier to read.
-    private final Pose2d rightLine = new Pose2d(1, 34, Math.toRadians(180));
-    private final Pose2d leftLine = new Pose2d(24, 30, Math.toRadians(0));
-    private final Pose2d centerLine = new Pose2d(12, 24.5, Math.toRadians(270));
+    private final Pose2d rightLine = new Pose2d(5, 34, Math.toRadians(0));
+    private final Pose2d leftLine = new Pose2d(28, 30, Math.toRadians(0));
+    private final Pose2d centerLine = new Pose2d(12, 4, Math.toRadians(-90));
     List<Pose2d> listPose = Arrays.asList(leftLine, centerLine, rightLine);
 
     // these poses are markers for the Left and right back to move to the backdrop in FrontSide Code these will not be here
     // private final Pose2d blueBackTruss = new Pose2d(-24, 36, Math.toRadians(0));
-    private final Pose2d blueFrontTrussMarker = new Pose2d(15, 48, Math.toRadians(-90));
+    private final Pose2d blueFrontTrussMarker = new Pose2d(15, 45, Math.toRadians(-90));
     // private final Pose2d blueFrontTruss = new Pose2d(-24, 36, Math.toRadians(0));
 
+    private final Pose2d backdropMarker = new Pose2d(28, 47, Math.toRadians(0));
     // these are the drop poses these are the same for all blue opModes only different for Red side
     private final Pose2d blueDropL = new Pose2d(50, 42, Math.toRadians(0));
     private final Pose2d blueDropC = new Pose2d(50, 36, Math.toRadians(0));
@@ -75,6 +76,7 @@ public class blueFront extends LinearOpMode {
 
         webcam1.setPipeline(ourCam);
 
+
         webcam1.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
@@ -88,7 +90,7 @@ public class blueFront extends LinearOpMode {
         });
 
         while (!isStarted()) {
-            drive.initArm();
+            drive.setBothGrip(false);
             linePlace = ourCam.getPixelLocation();
             telemetry.addData("Direction", linePlace);
             telemetry.update();
@@ -102,23 +104,23 @@ public class blueFront extends LinearOpMode {
         while(isStarted()) {
             if (linePlace == LEFT) {
                 moveToPurple(drive,0);
-                drive.setFrontGrip(false);
+                drive.setBackGrip(true);
                 LRCmoveToBackDrop (drive, 0);
-                drive.setBackGrip(false);
+                drive.setBackGrip(true);
                 goPark(drive);
                 break;
 
             }
             else if (linePlace == MIDDLE) {
                 moveToPurple(drive,1);
-                drive.setFrontGrip(false);
+                drive.setBackGrip(true);
                 LRCmoveToBackDrop(drive,1);
                 goPark(drive);
                 break;
             }
             else if (linePlace == RIGHT) {
                 moveToPurple(drive,2);
-                drive.setFrontGrip(false);
+                drive.setBackGrip(true);
                 LRCmoveToBackDrop (drive, 2);
                 goPark(drive);
                 break;
@@ -165,7 +167,13 @@ public class blueFront extends LinearOpMode {
     }
 
     public void goPark (SampleMecanumDrive robot){
+
+
         TrajectorySequence  park = robot.trajectorySequenceBuilder(robot.getPoseEstimate())
+                .lineToSplineHeading(backdropMarker,
+                        SampleMecanumDrive.getVelocityConstraint(travelSpeed,
+                                DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(travelAccel))
 
                 .lineToSplineHeading(opEndPose, SampleMecanumDrive.getVelocityConstraint(travelSpeed,
                                 DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),

@@ -64,11 +64,11 @@ public class redRecognizer extends OpenCvPipeline {
 
     }
     public pixelLocationRed getPixelLocationRed() {
-        if (leftAvg > middleAvg && leftAvg > rightAvg) {
+        if (leftAvg < middleAvg && leftAvg < rightAvg) {
             return pixelLocationRed.LEFT;
-        } else if (middleAvg > leftAvg && middleAvg > rightAvg) {
+        } else if (middleAvg < leftAvg && middleAvg < rightAvg) {
             return pixelLocationRed.MIDDLE;
-        } else if (rightAvg > leftAvg && rightAvg > middleAvg) {
+        } else if (rightAvg < leftAvg && rightAvg < middleAvg) {
                 return pixelLocationRed.RIGHT;
         } else {
             return pixelLocationRed.UNKNOWN;
