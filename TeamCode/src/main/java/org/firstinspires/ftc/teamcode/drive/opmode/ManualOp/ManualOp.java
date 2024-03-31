@@ -42,9 +42,10 @@ public class ManualOp extends OpMode {
         gripServoB = hardwareMap.servo.get("gripServoB");
         launchServo = hardwareMap.servo.get("launchServo");
         gripServoF.setDirection(Servo.Direction.REVERSE);
+        launchServo.setDirection(Servo.Direction.REVERSE);
         gripServoB.setPosition(0);
         gripServoF.setPosition(0);
-        launchServo.setPosition(0);
+        launchServo.setPosition(0.5);
 
 
         // leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -141,7 +142,15 @@ public class ManualOp extends OpMode {
                 gripServoF.setPosition(closed/servoRot);
             }
 
+            if (gamepad2.triangle)
+            {
+            launchServo.setPosition(0);
 
+            }
+            else
+            {
+                launchServo.setPosition(0.5);
+            }
 
 
 
